@@ -5,6 +5,8 @@
   dnf:
       autoremove: yes
   changed_when: no
+  when:
+    - not rhel8cis_dnf_autoremove
 
 - name: flush handlers
   meta: flush_handlers

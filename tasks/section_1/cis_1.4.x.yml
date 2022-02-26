@@ -28,16 +28,10 @@
       - rule_1.4.1
 
 - name: "1.4.2 | L1 | PATCH | Ensure filesystem integrity is regularly checked"
-  cron:
-      name: Run AIDE integrity check
-      cron_file: "{{ rhel8cis_aide_cron['cron_file'] }}"
-      user: "{{ rhel8cis_aide_cron['cron_user'] }}"
-      minute: "{{ rhel8cis_aide_cron['aide_minute'] | default('0') }}"
-      hour: "{{ rhel8cis_aide_cron['aide_hour'] | default('5') }}"
-      day: "{{ rhel8cis_aide_cron['aide_day'] | default('*') }}"
-      month: "{{ rhel8cis_aide_cron['aide_month'] | default('*') }}"
-      weekday: "{{ rhel8cis_aide_cron['aide_weekday'] | default('*') }}"
-      job: "{{ rhel8cis_aide_cron['aide_job'] }}"
+  ansible.builtin.copy:
+    content: "/usr/sbin/aide --check"
+    dest: /etc/cron.daily/aide
+    mode: 0755
   when:
       - rhel8cis_rule_1_4_2
   tags:
